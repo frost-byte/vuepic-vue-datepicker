@@ -7,8 +7,9 @@ import '@vuepic/vue-datepicker/dist/main.css';
 
 // const extents: Map<string, string> = new Map([]);
 // const currentExtent: DateExtent = extents.get('day');
-
-const week = ref();
+// could use two isolated calendars for a range of weeks; the available dates in the end calendar could exclude any dates before and including
+// that selected in the start calendar.
+const week1 = ref();
 const month = ref();
 
 onMounted(() => {
@@ -17,13 +18,19 @@ onMounted(() => {
   month.value = [startMonth, endMonth];
   const startWeek = '02/05/2023';
   const endWeek = '02/19/2023';
-  week.value = [startWeek, endWeek];
+  week1.value = [startWeek, endWeek];
 });
 </script>
 
 <template>
   <div>
-    <Datepicker v-model="month" range month-picker week-start="0" />
-    <Datepicker v-model="week" range week-picker week-start="0" />
+    <Datepicker v-model="month" range month-picker week-start="0" dark />
+    <Datepicker
+      v-model="week1"
+      week-picker
+      week-start="0"
+      :disabled-week-days="[1, 2, 3, 4, 5]"
+      dark
+    />
   </div>
 </template>
