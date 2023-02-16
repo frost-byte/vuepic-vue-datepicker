@@ -10,6 +10,9 @@ import '@vuepic/vue-datepicker/dist/main.css';
 // could use two isolated calendars for a range of weeks; the available dates in the end calendar could exclude any dates before and including
 // that selected in the start calendar.
 const week1 = ref();
+const wp1 = ref();
+const week2 = ref();
+const wp2 = ref();
 const month = ref();
 
 onMounted(() => {
@@ -17,9 +20,15 @@ onMounted(() => {
   const endMonth = { month: 3, year: 2023 };
   month.value = [startMonth, endMonth];
   const startWeek = '02/05/2023';
-  const endWeek = '02/19/2023';
+  const endWeek = '02/11/2023';
   week1.value = [startWeek, endWeek];
+  week2.value = ['02/26/2023', '03/04/2023'];
 });
+
+function displayDate(dateVal, prefix = 'Start') {
+  const newDate = new Date(dateVal);
+  return `${prefix} ${newDate.getDate()}`;
+}
 </script>
 
 <template>
@@ -27,10 +36,27 @@ onMounted(() => {
     <Datepicker v-model="month" range month-picker week-start="0" dark />
     <Datepicker
       v-model="week1"
+      ref="wp1"
       week-picker
       week-start="0"
       :disabled-week-days="[1, 2, 3, 4, 5]"
       dark
-    />
+    >
+      <template #action-preview="{ value }">
+        {{ displayDate(value) }}
+      </template>
+    </Datepicker>
+    <Datepicker
+      v-model="week2"
+      ref="wp2"
+      week-picker
+      week-start="0"
+      :disabled-week-days="[1, 2, 3, 4, 5]"
+      dark
+    >
+      <template #action-preview="{ value }">
+        {{ displayDate(value, 'End') }}
+      </template>
+    </Datepicker>
   </div>
 </template>
