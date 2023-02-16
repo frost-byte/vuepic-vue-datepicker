@@ -27,7 +27,11 @@ onMounted(() => {
 
 function displayDate(dateVal, prefix = 'Start') {
   const newDate = new Date(dateVal);
-  return `${prefix} ${newDate.getDate()}`;
+  const d = newDate.getDate();
+  const m = newDate.getMonth() + 1;
+  const y = newDate.getFullYear();
+
+  return `${prefix} ${m}/${d}/${y}`;
 }
 </script>
 
@@ -43,7 +47,7 @@ function displayDate(dateVal, prefix = 'Start') {
       dark
     >
       <template #action-preview="{ value }">
-        {{ displayDate(value) }}
+        {{ displayDate(value[0]) }}
       </template>
     </Datepicker>
     <Datepicker
@@ -55,7 +59,7 @@ function displayDate(dateVal, prefix = 'Start') {
       dark
     >
       <template #action-preview="{ value }">
-        {{ displayDate(value, 'End') }}
+        {{ displayDate(value[1], 'End') }}
       </template>
     </Datepicker>
   </div>
