@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import { DateExtent, extents } from '../interfaces/DateExtentInterface';
 
@@ -14,6 +14,11 @@ const wp1 = ref();
 const week2 = ref();
 const wp2 = ref();
 const month = ref();
+const minForEndWeek = computed(() => {
+  const endDate = Date(week1.value[1]);
+  endDate.setDate(endDate.getDate() + 1);
+  return endDate;
+});
 
 onMounted(() => {
   const startMonth = { month: 2, year: 2023 };
@@ -35,32 +40,46 @@ function displayDate(dateVal, prefix = 'Start') {
 }
 </script>
 
+<style scoped>
+.holder {
+  width: 45%;
+  display: inline-grid;
+}
+</style>
 <template>
   <div>
     <Datepicker v-model="month" range month-picker week-start="0" dark />
-    <Datepicker
-      v-model="week1"
-      ref="wp1"
-      week-picker
-      week-start="0"
-      :disabled-week-days="[1, 2, 3, 4, 5]"
-      dark
-    >
-      <template #action-preview="{ value }">
-        {{ displayDate(value[0]) }}
-      </template>
-    </Datepicker>
-    <Datepicker
-      v-model="week2"
-      ref="wp2"
-      week-picker
-      week-start="0"
-      :disabled-week-days="[1, 2, 3, 4, 5]"
-      dark
-    >
-      <template #action-preview="{ value }">
-        {{ displayDate(value[1], 'End') }}
-      </template>
-    </Datepicker>
+    <div class="holder">
+      <Datepicker
+        v-model="week1"
+        ref="wp1"
+        week-picker
+        week-start="0"
+        :disabled-week-days="[1, 2, 3, 4, 5]"
+        dark
+      >
+        <template #action-preview="{ value }">
+          {{ displayDate(value[0]) }}
+        </template>
+      </Datepicker>
+    </div>
+    <div class="holder">
+      <Datepicker
+        v-model="week2"
+        ref="wp2"
+        :min-date="minForEndWeek"
+        week-picker
+        week-start="0"
+        :disabled-week-days="[1, 2, 3, 4, 5]"
+        dark
+      >
+        <template #action-preview="{ value }">
+          {{ displayDate(value[1], 'End') }}
+        </template>
+      </Datepicker>
+    </div>
+  </div>
+  <div>
+    {{ minForEndWeek() }}
   </div>
 </template>
