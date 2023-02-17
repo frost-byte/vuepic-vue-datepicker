@@ -18,7 +18,7 @@ const minForEndWeek = computed(() => {
   console.log(week1.value[1]);
 
   const endDate = new Date(week1.value[1]);
-  endDate.setDate(endDate.getDate() + 1);
+  endDate.setTime(endDate.getTime() + 1);
   return endDate;
 });
 
@@ -52,9 +52,9 @@ function displayDate(dateVal, prefix = 'Start') {
       <Datepicker
         v-model="week1"
         ref="wp1"
+        :min-date="new Date('06/16/2019')"
         week-picker
         week-start="0"
-        :disabled-week-days="[1, 2, 3, 4, 5]"
         dark
       >
         <template #action-preview="{ value }">
@@ -76,6 +76,9 @@ function displayDate(dateVal, prefix = 'Start') {
           {{ displayDate(value[1], 'End') }}
         </template>
       </Datepicker>
+    </div>
+    <div>
+      {{ displayDate(minForEndWeek, 'End Min:') }}
     </div>
   </div>
 </template>
